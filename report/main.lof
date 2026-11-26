@@ -1,0 +1,12 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces Use Case Diagram: Customer, Driver, and Admin Interactions}}{3}{figure.23}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Activity Diagram: Booking and Assignment Flow}}{3}{figure.25}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Class Diagram: Layered OOP Components}}{4}{figure.27}%
+\contentsline {figure}{\numberline {4}{\ignorespaces ERD: Users and Bookings Relationship}}{4}{figure.29}%
+\contentsline {figure}{\numberline {5}{\ignorespaces SQLite Screenshot: Users Table Structure}}{5}{figure.33}%
+\contentsline {figure}{\numberline {6}{\ignorespaces SQLite Screenshot: Bookings Table Structure and Foreign Keys}}{6}{figure.36}%
+\contentsline {figure}{\numberline {7}{\ignorespaces SQLite Screenshot: Seeded Skeleton Data (Users and Bookings)}}{7}{figure.39}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Login Interface}}{9}{figure.45}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Registration Interface (with address field)}}{9}{figure.46}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Customer Booking Form}}{10}{figure.47}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Admin Panel with Driver Assignment}}{10}{figure.48}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Driver Assigned Trips View}}{10}{figure.49}%

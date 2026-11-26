@@ -1,0 +1,20 @@
+test_create_driver (test_auth_service.TestAuthService.test_create_driver) ... ok
+test_duplicate_email_rejected (test_auth_service.TestAuthService.test_duplicate_email_rejected) ... ok
+test_register_and_login_success (test_auth_service.TestAuthService.test_register_and_login_success) ... ok
+test_wrong_password_fails (test_auth_service.TestAuthService.test_wrong_password_fails) ... ok
+test_create_and_cancel_booking (test_booking_service.TestBookingService.test_create_and_cancel_booking) ... ok
+test_driver_overlap_prevented_on_assignment (test_booking_service.TestBookingService.test_driver_overlap_prevented_on_assignment) ... ok
+test_non_owner_cannot_cancel_booking (test_booking_service.TestBookingService.test_non_owner_cannot_cancel_booking) ... ok
+test_update_pending_booking (test_booking_service.TestBookingService.test_update_pending_booking) ... ok
+test_invalid_distance (test_fare_service.TestFareService.test_invalid_distance) ... ok
+test_premium_fare (test_fare_service.TestFareService.test_premium_fare) ... ok
+test_standard_fare (test_fare_service.TestFareService.test_standard_fare) ... ok
+test_booking_validation (test_validation.TestValidationService.test_booking_validation) ... ok
+test_registration_requires_address (test_validation.TestValidationService.test_registration_requires_address) ... ok
+test_valid_email (test_validation.TestValidationService.test_valid_email) ... ok
+test_valid_phone (test_validation.TestValidationService.test_valid_phone) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.241s
+
+OK

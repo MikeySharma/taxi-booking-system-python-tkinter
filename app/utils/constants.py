@@ -1,0 +1,32 @@
+ROLE_USER = "user"
+ROLE_ADMIN = "admin"
+ROLE_DRIVER = "driver"
+
+BOOKING_PENDING = "pending"
+BOOKING_CONFIRMED = "confirmed"
+BOOKING_COMPLETED = "completed"
+BOOKING_CANCELLED = "cancelled"
+
+BOOKING_STATUSES = [
+    BOOKING_PENDING,
+    BOOKING_CONFIRMED,
+    BOOKING_COMPLETED,
+    BOOKING_CANCELLED,
+]
+
+CAR_TYPES = ["Standard", "Premium", "SUV"]
+
+BASE_FARE = 5.00
+PER_KM_RATE = 2.50
+
+CAR_TYPE_MULTIPLIER = {
+    "Standard": 1.0,
+    "Premium": 1.5,
+    "SUV": 1.8,
+}
+
+DEFAULT_ADMIN_FULL_NAME = "System Admin"
+DEFAULT_ADMIN_PHONE = "0000000000"
+DEFAULT_ADMIN_ADDRESS = "Taxi Control Room"
+DEFAULT_ADMIN_EMAIL = "admin@taxi.local"
+DEFAULT_ADMIN_PASSWORD = "Admin@123"

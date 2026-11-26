@@ -1,0 +1,33 @@
+\contentsline {section}{Declaration}{i}{section*.1}%
+\contentsline {section}{Abstract}{ii}{section*.2}%
+\contentsline {section}{\numberline {1}Inroduction}{1}{section.6}%
+\contentsline {section}{\numberline {2}Objectives}{1}{section.7}%
+\contentsline {section}{\numberline {3}Task Description}{1}{section.8}%
+\contentsline {section}{\numberline {4}Requirement Analaysis}{1}{section.9}%
+\contentsline {subsection}{\numberline {4.1}Functional Requirement}{1}{subsection.10}%
+\contentsline {subsection}{\numberline {4.2}Technical Requirements}{2}{subsection.19}%
+\contentsline {subsection}{\numberline {4.3}Usability Requirements}{2}{subsection.20}%
+\contentsline {section}{\numberline {5}UML Diagrams}{3}{section.21}%
+\contentsline {subsection}{\numberline {5.1}Use Case Diagram}{3}{subsection.22}%
+\contentsline {subsection}{\numberline {5.2}Activity Diagram}{3}{subsection.24}%
+\contentsline {subsection}{\numberline {5.3}Class Diagram}{4}{subsection.26}%
+\contentsline {subsection}{\numberline {5.4}Database Design (ERM/ERD)}{4}{subsection.28}%
+\contentsline {section}{\numberline {6}Physical Database Design}{5}{section.30}%
+\contentsline {subsection}{\numberline {6.1}User's Database Design}{5}{subsection.31}%
+\contentsline {subsection}{\numberline {6.2}Booking's Database Design}{6}{subsection.34}%
+\contentsline {subsection}{\numberline {6.3}Skeleton Tables}{7}{subsection.37}%
+\contentsline {section}{\numberline {7}Data Dictionary}{7}{section.40}%
+\contentsline {section}{\numberline {8}Implementation}{8}{section.41}%
+\contentsline {subsection}{\numberline {8.1}Object-Oriented Programming (OOP) Implementation in the Project}{8}{subsection.42}%
+\contentsline {section}{\numberline {9}Computational Thinking}{8}{section.43}%
+\contentsline {section}{\numberline {10}UI Design}{9}{section.44}%
+\contentsline {section}{\numberline {11}Testing}{11}{section.50}%
+\contentsline {subsection}{Automated Tests}{11}{section*.51}%
+\contentsline {subsection}{Manual Testing Evidence}{11}{section*.54}%
+\contentsline {section}{\numberline {12}Analysis}{11}{section.56}%
+\contentsline {section}{\numberline {13}Conclusion}{12}{section.57}%
+\contentsline {section}{\numberline {14}References}{12}{section.58}%
+\contentsline {section}{\numberline {15}Appendix}{12}{section.60}%
+\contentsline {subsection}{Appendix A: Project Structure Snapshot}{12}{section*.61}%
+\contentsline {subsection}{Appendix B: Key Implementation Excerpt (Booking Service)}{12}{section*.71}%
+\contentsline {subsection}{Appendix C: SQL Schema Excerpt}{17}{section*.263}%

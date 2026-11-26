@@ -1,0 +1,423 @@
+\documentclass[12pt,a4paper]{article}
+
+% ====== Packages ======
+\usepackage{mathptmx} % Times-like font
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[round,authoryear]{natbib}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue,hypertexnames=false]{hyperref}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+% ====== Settings ======
+\onehalfspacing
+\sloppy
+
+% Better tabularx wrapping columns
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% Graphic paths
+\graphicspath{{assets/}{assets/uml/}{assets/ui/}{assets/db/}{assets/testing/}{assets/appendix/}}
+
+% Code Listing Settings
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Safe image helper (shows placeholder box if image not yet available)
+\newcommand{\safeimage}[4][0.9\textwidth]{
+\begin{figure}[H]
+    \centering
+    \IfFileExists{#2}{
+        \includegraphics[width=#1]{#2}
+    }{
+        \fbox{\parbox[c][0.26\textheight][c]{0.9\textwidth}{\centering
+        Missing asset: \texttt{\detokenize{#2}}\\
+        Place this image inside \texttt{report/assets/...}
+        }}
+    }
+    \caption{#3}
+    \label{#4}
+\end{figure}
+}
+
+\begin{document}
+
+% ======================================
+% Cover Page
+% ======================================
+\begin{titlepage}
+\centering
+
+{\LARGE \textbf{University of Bedfordshire} \par}
+{\large School of Computer Science and Technology \par}
+\vspace{1.5cm}
+
+{\Huge \textbf{Taxi Booking System} \par}
+\vspace{0.3cm}
+{\Large \textbf{Final Project Report} \par}
+\vspace{1.2cm}
+
+\begin{flushleft}
+\textbf{Student Name:} \underline{\hspace{9cm}} \\
+\textbf{Student ID:} \underline{\hspace{10cm}} \\
+\textbf{Unit:} CIS093-1 Mathematics and Concepts for Computational Thinking \\
+\textbf{Module Tutor:} \underline{\hspace{9.2cm}} \\
+\textbf{Submission Date:} \today
+\end{flushleft}
+
+\vfill
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% ======================================
+% Declaration
+% ======================================
+\section*{Declaration}
+\addcontentsline{toc}{section}{Declaration}
+I declare that this report and the associated Taxi Booking System implementation are my own work. All external sources and references are clearly acknowledged. I understand the university regulations on plagiarism and academic integrity, and I confirm that this submission follows those regulations.
+
+\vspace{1.2cm}
+\noindent\textbf{Signature:} \underline{\hspace{6cm}} \hfill \textbf{Date:} \underline{\hspace{3cm}}
+
+\newpage
+
+% ======================================
+% Abstract
+% ======================================
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+This project presents a desktop Taxi Booking System built using Python, Tkinter, and SQLite. The system supports three roles: customer, driver, and administrator. Customers can register, log in, create bookings with pickup/drop-off, date, time, and vehicle type, and manage pending bookings. Administrators can view all bookings, update booking status, and assign drivers. Drivers can log in and view assigned trips. The system applies object-oriented design with a layered architecture (UI, services, repositories, models, and database layer). Validation, role-based access, and driver overlap prevention are implemented to improve reliability. Testing includes automated unit tests and manual scenario validation. The project demonstrates core computational thinking concepts, UML-informed design, and a functional GUI-based software artifact aligned with assignment requirements.
+
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
+
+\pagenumbering{arabic}
+
+% ======================================
+\section{Inroduction}
+% ======================================
+Urban and campus transportation often depends on quick, reliable, and trackable ride bookings. Manual taxi dispatch and paper-based tracking can create delays, scheduling conflicts, and limited visibility for both customers and administrators. This project solves that issue by implementing a standalone Taxi Booking System desktop application.
+
+The solution uses Python Tkinter for the graphical user interface and SQLite for persistence \citep{python312,tkinterdocs,sqlite}. The application is designed to support realistic workflows: customer account creation and booking, administrator-level trip control and driver assignment, and driver-side trip visibility.
+
+% ======================================
+\section{Objectives}
+% ======================================
+\begin{itemize}[noitemsep]
+    \item Develop a working desktop Taxi Booking System using Python.
+    \item Apply object-oriented programming concepts to structure the system.
+    \item Implement customer, driver, and admin role-based access.
+    \item Persist data reliably using SQLite.
+    \item Validate inputs and prevent scheduling conflicts during driver assignment.
+    \item Demonstrate testing evidence for core features.
+\end{itemize}
+
+% ======================================
+\section{Task Description}
+% ======================================
+The project requires a software-based taxi booking solution with core operations for customer registration, trip booking, trip management, and administrative control. The final application must be functional, structured, and testable. For this implementation, the system includes:
+
+\begin{itemize}[noitemsep]
+    \item Customer registration and authentication.
+    \item Booking creation with pickup location, drop-off location, date, time, distance, and car type.
+    \item Booking history with update/cancel on pending bookings.
+    \item Driver assignment by admin with overlap prevention.
+    \item Driver dashboard for viewing assigned trips.
+\end{itemize}
+
+% ======================================
+\section{Requirement Analaysis}
+% ======================================
+
+\subsection{Functional Requirement}
+\begin{enumerate}[label=FR-\arabic*., noitemsep]
+    \item Customers shall register with name, address, phone, email, and password.
+    \item Customers, drivers, and admins shall log in with role-based access.
+    \item Customers shall create taxi bookings with pickup, drop-off, date, time, and car type.
+    \item Customers shall view, update, and cancel eligible bookings.
+    \item Admin shall view all bookings and update booking status.
+    \item Admin shall assign drivers to bookings.
+    \item System shall prevent assigning the same driver to overlapping trips (same date/time slot).
+    \item Drivers shall view trips assigned to them.
+\end{enumerate}
+
+\subsection{Technical Requirements}
+\begin{itemize}[noitemsep]
+    \item Language: Python 3.x
+    \item GUI: Tkinter
+    \item Database: SQLite
+    \item Architecture: Layered OOP structure (UI/Service/Repository/Model/DB)
+    \item Environment: \texttt{uv} virtual environment workflow
+    \item Automated tests: \texttt{unittest}
+    \item Security baseline: PBKDF2-based password hashing aligned with secure storage guidance \citep{owasp}
+\end{itemize}
+
+\subsection{Usability Requirements}
+\begin{itemize}[noitemsep]
+    \item Forms must be simple and clearly labeled.
+    \item Validation errors must be understandable.
+    \item Booking and admin tables must display readable summaries.
+    \item Core user actions should require minimal steps.
+\end{itemize}
+
+% ======================================
+\section{UML Diagrams}
+% ======================================
+
+\subsection{Use Case Diagram}
+\safeimage{uml/use_case_diagram.png}{Use Case Diagram: Customer, Driver, and Admin Interactions}{fig:usecase}
+
+\subsection{Activity Diagram}
+\safeimage{uml/activity_diagram.png}{Activity Diagram: Booking and Assignment Flow}{fig:activity}
+
+\subsection{Class Diagram}
+\safeimage{uml/class_diagram.png}{Class Diagram: Layered OOP Components}{fig:class}
+
+\subsection{Database Design (ERM/ERD)}
+\safeimage{uml/erd.png}{ERD: Users and Bookings Relationship}{fig:erd}
+
+% ======================================
+\section{Physical Database Design}
+% ======================================
+
+\subsection{User's Database Design}
+\begin{table}[H]
+\centering
+\caption{Users Table Physical Design}
+\label{tab:users-design}
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Column} & \textbf{Type} & \textbf{Constraint} & \textbf{Description} \\
+\midrule
+id & INTEGER & PK, AUTOINCREMENT & Unique user identifier \\
+full\_name & TEXT & NOT NULL & User full name \\
+address & TEXT & NOT NULL & User address \\
+phone & TEXT & NOT NULL & Contact number \\
+email & TEXT & NOT NULL, UNIQUE & Login email \\
+password\_hash & TEXT & NOT NULL & Hashed password \\
+role & TEXT & NOT NULL & user/admin/driver \\
+created\_at & TEXT & NOT NULL & Account creation timestamp \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\safeimage[0.97\textwidth]{db/users_table_view.png}{SQLite Screenshot: Users Table Structure}{fig:db-users-structure}
+
+\subsection{Booking's Database Design}
+\begin{table}[H]
+\centering
+\caption{Bookings Table Physical Design}
+\label{tab:booking-design}
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Column} & \textbf{Type} & \textbf{Constraint} & \textbf{Description} \\
+\midrule
+id & INTEGER & PK, AUTOINCREMENT & Unique booking identifier \\
+user\_id & INTEGER & FK, NOT NULL & Booking owner (customer) \\
+assigned\_driver\_id & INTEGER & FK, NULL & Driver assigned by admin \\
+pickup\_location & TEXT & NOT NULL & Pickup point \\
+dropoff\_location & TEXT & NOT NULL & Drop-off point \\
+scheduled\_date & TEXT & NOT NULL & Booking date (YYYY-MM-DD) \\
+scheduled\_time & TEXT & NOT NULL & Booking time (HH:MM) \\
+distance\_km & REAL & NOT NULL, CHECK $>$ 0 & Trip distance \\
+car\_type & TEXT & NOT NULL & Vehicle category \\
+fare\_amount & REAL & NOT NULL & Calculated fare \\
+booking\_status & TEXT & NOT NULL & pending, confirmed, completed, cancelled \\
+created\_at & TEXT & NOT NULL & Creation timestamp \\
+updated\_at & TEXT & NOT NULL & Last update timestamp \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\safeimage[0.97\textwidth]{db/bookings_table_view.png}{SQLite Screenshot: Bookings Table Structure and Foreign Keys}{fig:db-bookings-structure}
+
+\subsection{Skeleton Tables}
+\begin{table}[H]
+\centering
+\caption{Sample Users Skeleton Data}
+\begin{tabular}{c l l l}
+\toprule
+\textbf{id} & \textbf{full\_name} & \textbf{email} & \textbf{role} \\
+\midrule
+1 & System Admin & admin@taxi.local & admin \\
+2 & Alice Student & alice@student.local & user \\
+3 & Bob Student & bob@student.local & user \\
+4 & Ramesh Driver & driver1@taxi.local & driver \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\safeimage[0.97\textwidth]{db/skeleton_tables_view.png}{SQLite Screenshot: Seeded Skeleton Data (Users and Bookings)}{fig:db-skeleton-data}
+
+% ======================================
+\section{Data Dictionary}
+% ======================================
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth} >{\raggedright\arraybackslash}p{0.14\textwidth} >{\raggedright\arraybackslash}p{0.49\textwidth}@{}}
+\caption{Data Dictionary for Key Fields}\\
+\toprule
+\textbf{Field Name} & \textbf{Type} & \textbf{Meaning} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Field Name} & \textbf{Type} & \textbf{Meaning} \\
+\midrule
+\endhead
+user.id & INTEGER & Primary key for each user record. \\
+user.role & TEXT & Role name controlling permissions (user/admin/driver). \\
+booking.user\_id & INTEGER & Customer linked to the booking. \\
+booking.assigned\_driver\_id & INTEGER & Driver assigned by admin. \\
+booking.scheduled\_date & TEXT & Date of travel (YYYY-MM-DD). \\
+booking.scheduled\_time & TEXT & Time of travel (HH:MM). \\
+booking.booking\_status & TEXT & Current state of booking workflow. \\
+booking.fare\_amount & REAL & Computed fare based on distance and car type. \\
+\bottomrule
+\end{longtable}
+
+% ======================================
+\section{Implementation}
+% ======================================
+The project follows a layered implementation to separate concerns and simplify maintenance:
+\begin{itemize}[noitemsep]
+    \item \textbf{UI layer:} Tkinter views for login, registration, booking, admin, and driver dashboards.
+    \item \textbf{Service layer:} business logic for authentication, fare, validation, booking, and assignment rules.
+    \item \textbf{Repository layer:} SQL-focused data access methods.
+    \item \textbf{Model layer:} domain models for users and bookings.
+    \item \textbf{DB layer:} SQLite connection, schema setup, and seed data.
+\end{itemize}
+
+\subsection{Object-Oriented Programming (OOP) Implementation in the Project}
+OOP is applied using class-based services, repositories, and model classes. Encapsulation is used to keep SQL operations inside repositories and business rules inside services. This avoids direct database manipulation from UI code. Core examples include:
+\begin{itemize}[noitemsep]
+    \item \texttt{AuthService} for registration, password hashing, and login.
+    \item \texttt{BookingService} for booking creation, updates, cancellation, status management, and driver assignment.
+    \item \texttt{UserRepository}/\texttt{BookingRepository} for data persistence.
+\end{itemize}
+
+% ======================================
+\section{Computational Thinking}
+% ======================================
+\textbf{Decomposition:} The taxi workflow was divided into authentication, booking, assignment, and trip-view subproblems. \\
+\textbf{Pattern Recognition:} Shared CRUD patterns were reused across customer and admin operations. \\
+\textbf{Abstraction:} UI interactions abstract away SQL details through service/repository calls. \\
+\textbf{Algorithm Design:} Driver overlap checking algorithm validates date/time conflict before assignment.
+
+% ======================================
+\section{UI Design}
+% ======================================
+\safeimage{ui/login_screen.png}{Login Interface}{fig:ui-login}
+\safeimage{ui/register_screen.png}{Registration Interface (with address field)}{fig:ui-register}
+\safeimage{ui/customer_booking_form.png}{Customer Booking Form}{fig:ui-booking-form}
+\safeimage{ui/admin_panel.png}{Admin Panel with Driver Assignment}{fig:ui-admin}
+\safeimage{ui/driver_trips.png}{Driver Assigned Trips View}{fig:ui-driver}
+
+% ======================================
+\section{Testing}
+% ======================================
+Testing used both automated unit tests and manual evidence collection.
+
+\subsection*{Automated Tests}
+\addcontentsline{toc}{subsection}{Automated Tests}
+Command used:
+\begin{lstlisting}[language=bash]
+uv run -m unittest discover -s tests -v
+\end{lstlisting}
+
+Current result: \textbf{15 tests passed}. Output is stored in \path{report_evidence/testing/unit-test-output.txt}.
+
+\subsection*{Manual Testing Evidence}
+\addcontentsline{toc}{subsection}{Manual Testing Evidence}
+Manual test cases and execution logs are maintained in:
+\begin{itemize}[noitemsep]
+    \item \texttt{report\_evidence/testing/test-cases-template.md}
+    \item \texttt{report\_evidence/testing/test-execution-log.md}
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Representative Functional Test Cases}
+\label{tab:test-cases}
+\begin{tabularx}{\textwidth}{l Y Y}
+\toprule
+\textbf{Test ID} & \textbf{Expected Result} & \textbf{Status} \\
+\midrule
+TC-01 Registration with valid data & Account is created and user can login & Pass \\
+TC-04 Booking creation with valid date/time & Booking is saved and shown in list & Pass \\
+TC-08 Driver overlap prevention & Assignment is blocked with conflict message & Pass \\
+TC-09 Driver trip view & Driver sees assigned bookings & Pass \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ======================================
+\section{Analysis}
+% ======================================
+The implementation achieved the target requirements for role separation, booking operations, and assignment control. The layered architecture improved readability and testability, reflected by successful automated test execution. The primary design trade-off is a simplified overlap rule (same date and time slot), which is practical for coursework but can be expanded to full time-range conflict detection in future versions. SQLite-based persistence provides a lightweight local storage model suited for this scale \citep{sqlite}.
+
+% ======================================
+\section{Conclusion}
+% ======================================
+The Taxi Booking System meets the core assignment goals through a functional Python Tkinter application backed by SQLite. The system demonstrates OOP design, computational thinking, UML-aligned modeling intent, and validated behavior through testing. It provides a complete educational artifact that can be demonstrated, discussed, and extended.
+
+% ======================================
+\section{References}
+% ======================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% ======================================
+\section{Appendix}
+% ======================================
+\subsection*{Appendix A: Project Structure Snapshot}
+\addcontentsline{toc}{subsection}{Appendix A: Project Structure Snapshot}
+\begin{lstlisting}
+app/
+  ui/
+  services/
+  repositories/
+  models/
+  db/
+tests/
+report_evidence/
+\end{lstlisting}
+
+\subsection*{Appendix B: Key Implementation Excerpt (Booking Service)}
+\addcontentsline{toc}{subsection}{Appendix B: Key Implementation Excerpt (Booking Service)}
+\lstinputlisting[language=Python, firstline=1, lastline=190]{../app/services/booking_service.py}
+
+\subsection*{Appendix C: SQL Schema Excerpt}
+\addcontentsline{toc}{subsection}{Appendix C: SQL Schema Excerpt}
+\lstinputlisting[language=SQL]{../app/db/schema.sql}
+
+\end{document}
